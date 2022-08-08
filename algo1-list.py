@@ -4,14 +4,12 @@ import csv
 import math
 import pandas as pd
 import timeit
+import haversine as hs
 
 # import asyncore
 # import asyncio
 
 # == Note == #
-
-# To run, install panda
-# Type in cmd: pip install pandas
 
 # To print all rows in data frame, add "to_string()"
 # Example: print(dfmatched.to_string())
@@ -33,8 +31,6 @@ PPV_FILENAME    = 'ppv.csv'
 
 def retrieveData(filename,headerList,dataLaLoList,numOfRow):
     
-    # numOfRow = 0
-
     file = open(filename)
     csvreader = csv.reader(file)
     headerList = next(csvreader)
@@ -52,7 +48,9 @@ def retrieveData(filename,headerList,dataLaLoList,numOfRow):
 
 def distanceFormula(lat1,lon1,lat2,lon2):
     d = 0.00
-    d = math.acos(math.sin(lat1)*math.sin(lat2) + math.cos(lat1)*math.cos(lat2)*math.cos(lon2-lon1)) * 6371000
+    point1 = (lat1,lon1)
+    point2 = (lat2,lon2)
+    d = hs.haversine(point1,point2)
     return d
 
 
@@ -83,7 +81,6 @@ def calcShortestSphericalDistance(dataLaLoPeople,dataLaLoPPV):
 
             d = distanceFormula(lat1,lon1,lat2,lon2)
 
-            # -- What if sama jarak?
             if shortestDistance == 0.00:
                 shortestDistance = d
                 nearestPPV = 0
@@ -97,8 +94,7 @@ def calcShortestSphericalDistance(dataLaLoPeople,dataLaLoPPV):
         matchedPeoplePPV.append([peopleCounter,nearestPPV])
         peopleCounter += 1
 
-    matchedPeoplePPV.pop(0) # ----------------------------- Remove the NaN value at index 0
-    # matchedPeoplePPV.insert(0,['People','Nearest PPV']) # - Header for Data Frame
+    matchedPeoplePPV.pop(0)
 
     return matchedPeoplePPV
     
@@ -146,7 +142,7 @@ print()
 
 f = open('matchedPeoplePPV.csv', 'w', newline = '')
 writer = csv.writer(f)
-writer.writerow(['Index','Latitdude','Longitude'])
+writer.writerow(['Index','People','PPV'])
 
 indexCounter = 0
 for row in matchedPeoplePPV:
@@ -156,6 +152,7 @@ for row in matchedPeoplePPV:
 
 # -- STOP TIME -- #
 stop = timeit.default_timer()
+
 
 # -- Display processing time -- #
 print('Time: ', stop - start)
