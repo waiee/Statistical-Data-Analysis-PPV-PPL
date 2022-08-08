@@ -20,8 +20,6 @@ import timeit
 # 1 - Filename
 # 2 - Distance formula
 
-#Algo 1 latest.py, for loop + list
-
 # -- START TIME -- #
 start = timeit.default_timer()
 
