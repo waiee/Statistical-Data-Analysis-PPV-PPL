@@ -18,8 +18,6 @@ import timeit
 # Data frame cannot be use with Linked List
 # Alternative: Display table manually
 
-#Algo2.py, for loop and linked list
-
 # -- START TIME -- #
 start = timeit.default_timer()
 
@@ -117,7 +115,6 @@ class SLinkedList:
 
 # --------- FUNCTIONS --------- #
 
-#Retrieve Data Function
 def retrieveData(filename,headerList,dataLaLoList,numOfRow):
     
     # numOfRow = 0
@@ -134,13 +131,13 @@ def retrieveData(filename,headerList,dataLaLoList,numOfRow):
 
         dataLaLoList.add(floatLat, floatLon)
 
-#Calculate Distance 
+
 def distanceFormula(lat1,lon1,lat2,lon2):
     d = 0.00
     d = math.acos(math.sin(lat1)*math.sin(lat2) + math.cos(lat1)*math.cos(lat2)*math.cos(lon2-lon1)) * 6371000
     return d
 
-#Calculate shortest distance
+
 def calcShortestSphericalDistance(dataLaLoPeople,dataLaLoPPV):
 
     matchedPeoplePPV = SLinkedList()
@@ -268,4 +265,3 @@ stop = timeit.default_timer()
 
 # # -- Display processing time -- #
 print('Time: ', stop - start)
-
