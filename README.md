@@ -5,4 +5,4 @@ consists of 10000 vaccinees’ locations while the second dataset represents 100
 vaccination centers’ locations. All the locations are given by the latitudes and longitudes.
 My task is to assign vaccinees to vaccination centers, and I need to find the shortest distances.
 
-![alt text](https://github.com/[waiee]/[Statistical-Data-Analysis-PPV-PPL]/blob/[branch]/Graph1.png?raw=true)
+![alt text](https://github.com/[waiee]/[Statistical-Data-Analysis-PPV-PPL]/blob/[master]/Graph1.png?raw=true)
