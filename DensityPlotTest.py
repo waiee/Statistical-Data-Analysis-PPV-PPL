@@ -33,7 +33,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-FILENAME = 'SampleTime.csv'
+FILENAME = 'method1.csv'
 
 def retrieveData(filename,headerList,dataLaLoList,numOfRow):
     
@@ -56,8 +56,6 @@ retrieveData(FILENAME,header,dataFile,numOfRow)
 dfDataFile = pd.DataFrame(dataFile)
 dfDataFile.columns = ['Times']
 
-print(dataFile)
-
 # ====== Sample Used (Google, Waiee and Edit) ====== #
 
 # importing libraries
@@ -65,13 +63,20 @@ print(dataFile)
 # importing diamond dataset from the library
 # df = sns.load_dataset(dfDataFile)
 
-# plt.figure(figsize=(6,6)) # -------------------------- Resize Graph Figure ------------
 
 # plotting density plot for carat using distplot()
 p = sns.kdeplot(dfDataFile['Times'], shade = True, color='green')
-# p.set_xlabel("Times", fontsize = 10) --------------- Additional Distplot Commmand ---
+
+sns.set_style('darkgrid')
+plt.xticks([0, 10, 20, 30, 40])
+
+# plt.figure(figsize=(6,6)) # -------------------------- Resize Graph Figure ------------
+# p.set_xlabel("Times", fontsize = 10) # --------------- Additional Distplot Commmand ---
+# print(sns.axes_style())
+# plt.xlabel('Purchase amount', fontsize=18)
+
 
 # visualizing plot using matplotlib.pyplot library
 plt.show()
 
-# ================================================== #
+# ------------------------------------------------------------------- #
