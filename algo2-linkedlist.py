@@ -5,6 +5,7 @@ from hashlib import new
 import math
 import pandas as pd
 import timeit
+import haversine as hs
 
 # == Note == #
 
@@ -16,7 +17,8 @@ import timeit
 # 2 - Distance formula
 
 # Data frame cannot be use with Linked List
-# Alternative: Display table manually
+# Alternative: Table not printed.
+
 
 # -- START TIME -- #
 start = timeit.default_timer()
@@ -49,7 +51,7 @@ class SLinkedList:
         self.size = 0
 
     def add(self, lat, lon):
-        new_node = Node(lat, lon) # -- self.head dibuang
+        new_node = Node(lat, lon)
         
         if self.head == None:
             self.head = new_node
@@ -105,20 +107,10 @@ class SLinkedList:
         return tempNode
 
 
-# -- Test Linked List -- #
-
-# ketupat = SLinkedList()
-# ketupat.add(1,2)
-# ketupat.add(123,456)
-# ketupat.listPrint()
-
-
 # --------- FUNCTIONS --------- #
 
 def retrieveData(filename,headerList,dataLaLoList,numOfRow):
     
-    # numOfRow = 0
-
     file = open(filename)
     csvreader = csv.reader(file)
     headerList = next(csvreader)
@@ -133,8 +125,11 @@ def retrieveData(filename,headerList,dataLaLoList,numOfRow):
 
 
 def distanceFormula(lat1,lon1,lat2,lon2):
+
     d = 0.00
-    d = math.acos(math.sin(lat1)*math.sin(lat2) + math.cos(lat1)*math.cos(lat2)*math.cos(lon2-lon1)) * 6371000
+    point1 = (lat1,lon1)
+    point2 = (lat2,lon2)
+    d = hs.haversine(point1,point2)
     return d
 
 
@@ -169,7 +164,6 @@ def calcShortestSphericalDistance(dataLaLoPeople,dataLaLoPPV):
 
             d = distanceFormula(lat1,lon1,lat2,lon2)
 
-            # -- What if sama jarak?
             if shortestDistance == 0.00:
                 shortestDistance = d
                 nearestPPV = 0
@@ -182,10 +176,6 @@ def calcShortestSphericalDistance(dataLaLoPeople,dataLaLoPPV):
 
         matchedPeoplePPV.add(peopleCounter,nearestPPV)
         peopleCounter += 1
-
-    # -- Tambah Header -- #
-    # matchedPeoplePPV.pop(0) # ----------------------------- Remove the NaN value at index 0
-    # matchedPeoplePPV.insert(0,['People','Nearest PPV']) # - Header for Data Frame
 
     return matchedPeoplePPV
     
@@ -203,13 +193,8 @@ numOfPeople    = 0
 
 retrieveData(PEOPLE_FILENAME,headerPeople,dataLaLoPeople,numOfPeople)
 
-# dataLaLoPeople.listPrint()
 print('Data of people retrieved.')
 print()
-
-# df = pd.DataFrame(dataLaLoPeople)
-# print(df)
-# print()
 
 
 # # -- PPV -- #
@@ -220,13 +205,8 @@ numOfPPV    = 0
 
 retrieveData(PPV_FILENAME,headerPPV,dataLaLoPPV,numOfPPV)
 
-# dataLaLoPPV.listPrint()
 print('Data of PPV retrieved.')
 print()
-
-# df = pd.DataFrame(dataLaLoPPV)
-# print(df)
-# print()
 
 
 # # - Calculation - #
@@ -234,34 +214,26 @@ print()
 matchedPeoplePPV = SLinkedList()
 matchedPeoplePPV = calcShortestSphericalDistance(dataLaLoPeople,dataLaLoPPV)
 
-# matchedPeoplePPV.listPrintFormatted()
 print('People matched to nearest PPV.')
 print()
 
-# dfmatched = pd.DataFrame(matchedPeoplePPV)
-# print(dfmatched)
-# print()
 
 # -- Write to csv file -- #
 
 f = open('matchedPeoplePPV.csv', 'w', newline = '')
 writer = csv.writer(f)
-writer.writerow(['Index','Latitdude','Longitude'])
+writer.writerow(['Index','People','PPV'])
 
 indexCounter = 0
 for i in range(matchedPeoplePPV.getSize()):
     indexCounter += 1
     tempNote = matchedPeoplePPV.traverseSpecificNodes(i)
     writer.writerow([indexCounter, tempNote.getLatitude(), tempNote.getLongitude()])
-# for row in matchedPeoplePPV:
-#     indexCounter += 1
-#     writer.writerow([indexCounter, row.getLatitude(), row.getLongitude()])
-
-
 
 
 # # -- STOP TIME -- #
 stop = timeit.default_timer()
+
 
 # # -- Display processing time -- #
 print('Time: ', stop - start)
