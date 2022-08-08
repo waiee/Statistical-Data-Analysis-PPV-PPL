@@ -129,9 +129,6 @@ def calcShortestSphericalDistance(dataLaLoPeople,dataLaLoPPV,numOfPeople,numOfPP
 numOfPeople = countNumOfRow(PEOPLE_FILENAME)
 numOfPPV = countNumOfRow(PPV_FILENAME)
 
-print(numOfPeople)
-print(numOfPPV)
-
 
 # -- People -- #
 
